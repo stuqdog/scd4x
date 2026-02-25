@@ -172,7 +172,7 @@ func (sensor SCD4x) GetTemperatureOffset() (float64, error) {
 	if !resp[0].CrcMatch() {
 		return 0, fmt.Errorf("temperature offset CRC mismatch")
 	}
-	return -45 + 175*float64(resp[0].GetData())/65535, nil
+	return -45 + 105*float64(resp[0].GetData())/65535, nil
 }
 
 func (sensor SCD4x) GetSensorAltitude() (uint16, error) {
