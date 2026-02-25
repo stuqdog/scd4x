@@ -151,9 +151,13 @@ func (sensor SCD4x) ReadMeasurement() (SensorData, error) {
 			return result, fmt.Errorf("measurement CRC mismatch")
 		}
 	}
+	offset, err := sensor.GetTemperatureOffset()
+	if err != nil {
+		return result, err
+	}
 	result = SensorData{
 		CO2:  resp[0].GetData(),
-		Temp: -45 + 175*float64(resp[1].GetData())/65535,
+		Temp: (-45 + 175*float64(resp[1].GetData())/65535) + offset - 4,
 		Rh:   100 * float64(resp[2].GetData()) / 65535,
 	}
 	if sensor.UseFahrenheit {
